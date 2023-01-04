@@ -20,5 +20,6 @@
     "no-console": "warn",
     "camelcase": "error",
     "sort-imports": "error"
-  }
+  },
+  "ignorePatterns": ["dist/**/*"]
 }
