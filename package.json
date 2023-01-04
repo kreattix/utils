@@ -16,7 +16,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "test": "jest"
+    "test": "jest --watch",
+    "build:test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^29.2.5",
