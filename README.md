@@ -9,13 +9,13 @@ Basic Utility functions for Kreattix Design. As kreattix design don't have their
 ### using npm
 
 ```sh
-$ npm install kreattix-design-utils
+$ npm install @kreattix/utils
 ```
 
 ### using yarn
 
 ```sh
-$ yarn add kreattix-design-utils
+$ yarn add @kreattix/utils
 ```
 
 As of now we only have functions to map classes based on the values provided, along with the functionality of adding prefix to the class.

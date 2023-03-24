@@ -1,6 +1,6 @@
 {
   "name": "@kreattix/utils",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "files": [
     "dist"
@@ -43,7 +43,13 @@
     "url": "https://github.com/kreattix/utils/issues"
   },
   "homepage": "https://github.com/kreattix/utils#readme",
-  "keywords": ["kreattix", "design", "utils", "utility", "functions"],
+  "keywords": [
+    "kreattix",
+    "design",
+    "utils",
+    "utility",
+    "functions"
+  ],
   "author": "Prince Patel",
   "license": "MIT"
 }
