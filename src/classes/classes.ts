@@ -1,4 +1,4 @@
-import { AddPrefixType, JoinClassType, MapClassType } from './types'
+import { AddPrefixType, ClassNames, JoinClassType, MapClassType } from './types'
 
 export const joinClass: JoinClassType = (classlist = []) => {
   return classlist.join(' ').trim()
@@ -28,4 +28,48 @@ export const mapClass: MapClassType = (prefix, classlist, staticClasses = '') =>
   } else {
     return joinClass([addPrefix(prefix, classnames), staticClasses])
   }
+}
+
+export function prefixClassnames(prefix: string, ...args: ClassNames.ArgumentArray): string {
+  return args
+    .flatMap((arg) => {
+      if (!arg) return []
+
+      const argType = typeof arg
+
+      if (argType === 'string' || argType === 'number') {
+        return [prefix, arg.toString()].join('-')
+      } else if (Array.isArray(arg)) {
+        return prefixClassnames(prefix, ...arg)
+      } else if (argType === 'object') {
+        return Object.entries(arg)
+          .filter(([, isAllowed]) => isAllowed)
+          .map(([classname]) => [prefix, classname].join('-'))
+      }
+      return []
+    })
+    .join(' ')
+    .trim()
+}
+
+export function classnames(...args: ClassNames.ArgumentArray): string {
+  return args
+    .flatMap((arg) => {
+      if (!arg) return []
+
+      const argType = typeof arg
+
+      if (argType === 'string' || argType === 'number') {
+        return arg.toString()
+      } else if (Array.isArray(arg)) {
+        return classnames(...arg)
+      } else if (argType === 'object') {
+        return Object.entries(arg)
+          .filter(([, isAllowed]) => isAllowed)
+          .map(([classname]) => classname)
+      }
+      return []
+    })
+    .join(' ')
+    .trim()
 }
