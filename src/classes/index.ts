@@ -1,1 +1,1 @@
-export { addPrefix, joinClass, mapClass } from './classes'
+export * from './classes'
