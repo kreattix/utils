@@ -18,44 +18,90 @@ $ npm install @kreattix/utils
 $ yarn add @kreattix/utils
 ```
 
-As of now we only have functions to map classes based on the values provided, along with the functionality of adding prefix to the class.
+## Class Utilities Documentation
 
-## Class Functions
+### `classnames` Function
 
-### mapClass(prefix, classlist, staticClasses(optional))
+The `classnames` function is a utility designed to conditionally join class names together. It is flexible and accepts multiple types of arguments, including strings, numbers, arrays, and objects. This function is particularly useful in front-end development, where it can dynamically generate a class name string based on certain conditions.
 
-```js
-mapClass(
-  'kd',
-  {
-    class1: true,
-    class2: false,
-  },
-  'static-class',
-)
-// result -> kd-class1 static-class
+#### Usage
 
-mapClass(
-  null,
-  {
-    class1: true,
-    class2: false,
-  },
-  'static-class',
-)
-// result -> class1 static-class
+The function can be called with various types of arguments:
 
-mapClass('kd', 'class-as-string', 'static-class')
-// result -> kd-class-as-string static-class
+1. **Strings and Numbers**: Directly passed as class names.
+
+2. **Arrays**: Recursively processed, allowing nested conditions.
+
+3. **Objects**: Keys are used as class names if their corresponding values evaluate to `true`.
+
+#### Examples
+
 ```
 
-### Parameters
+import { classnames } from '@kreattix/utils';
 
-| Parameter Name | Type                                  | Default |
-| -------------- | ------------------------------------- | ------- |
-| prefix         | `string , null`                       | --      |
-| classlist      | `string , { [key: string]: boolean }` | --      |
-| staticClass    | `string`                              | ""      |
+const className = classnames('btn', 'btn-primary');
+// Output: 'btn btn-primary'
+
+
+const className = classnames({
+'btn': true,
+'btn-primary': true,
+'hidden': false,
+});
+// Output: 'btn btn-primary'
+
+
+const isActive = true;
+const className = classnames('btn', { 'btn-primary': isActive, 'hidden': !isActive }, ['additional-class']);
+// Output: 'btn btn-primary additional-class'
+
+```
+
+## Object Utilities Documentation
+
+This documentation provides details on utility functions designed for object manipulation within TypeScript. These utilities ensure type safety when working with the keys, values, and entries of objects.
+
+### `objectEntries`
+
+Returns the entries (key-value pairs) of the provided object with type safety.
+
+```
+
+import { objectEntries } from '@kreattix/utils';
+
+const user: User = { id: 1, name: 'John Doe' };
+const entries = objectEntries(user);
+// entries is of type [keyof User, User[keyof User]][], which is [['id', number], ['name', string]]
+
+```
+
+### `objectKeys`
+
+Returns the keys of the provided object with type safety.
+
+```
+
+import { objectKeys } from '@kreattix/utils';
+
+const user: User = { id: 1, name: 'John Doe' };
+const keys = objectKeys(user);
+// keys is of type (keyof User)[], which is ['id', 'name']
+
+```
+
+### `objectValues`
+
+Returns the values of the provided object with type safety.
+
+## Available Functions
+
+| Function Name | Type                                             | Default |
+| ------------- | ------------------------------------------------ | ------- |
+| classnames    | `string , { [key: string]: boolean } , string[]` | --      |
+| objectEntries | `object`                                         | --      |
+| objectKeys    | `object`                                         | --      |
+| objectValues  | `object`                                         | --      |
 
 ## License
 

@@ -1,1 +1,1 @@
-export * from './classes/types'
+export * from './classnames/types'
