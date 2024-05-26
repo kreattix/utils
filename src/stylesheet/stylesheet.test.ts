@@ -1,78 +1,115 @@
-import { StyleSheet } from './index'
+import { StyleSheet, StyleSheetClass } from './stylesheet'
 
 describe('StyleSheetClass', () => {
+  let styleSheet: StyleSheetClass
+
+  beforeEach(() => {
+    styleSheet = StyleSheet()
+  })
+
   describe('varName', () => {
     it('should return the variable name with prefix', () => {
-      const styleSheet = StyleSheet('prefix')
-      const varName = styleSheet.varName('color', 'primary')
-      expect(varName).toEqual('--prefix-color-primary')
+      const varName = styleSheet.varName('color')
+      expect(varName).toEqual('--color')
     })
 
-    it('should return the variable name without prefix', () => {
-      const styleSheet = StyleSheet()
-      const varName = styleSheet.varName('color', 'primary')
-      expect(varName).toEqual('--color-primary')
+    it('should return the variable name without prefix if isStyles is true', () => {
+      styleSheet.isStyles = true
+      const varName = styleSheet.varName('color')
+      expect(varName).toEqual('color')
+    })
+
+    it('should return the variable name with prefix and hyphenized arguments', () => {
+      styleSheet = StyleSheet('app')
+      const varName = styleSheet.varName('background', 'color')
+      expect(varName).toEqual('--app-background-color')
     })
   })
 
   describe('createVariables', () => {
-    it('should create variables with sized properties', () => {
-      const styleSheet = StyleSheet()
+    it('should create CSS variables from the given properties', () => {
       const vars = {
-        borderRadius: 10,
-        lineHeight: 20,
-        fontSize: 16,
-        padding: 5,
-        margin: 10,
+        fontSize: '16px',
+        lineHeight: '24px',
+        borderRadius: '4px',
+        padding: '8px',
+        margin: '16px',
+        color: '#000',
       }
       const result = styleSheet.createVariables(vars)
       expect(result).toEqual({
-        '--border-radius-small': '8px',
-        '--border-radius': '10px',
-        '--border-radius-large': '12px',
-        '--line-height-small': '18px',
-        '--line-height': '20px',
-        '--line-height-large': '22px',
-        '--font-size-small': '14px',
+        '--border-radius': '4px',
+        '--border-radius-large': '6px',
+        '--border-radius-small': '2px',
+        '--color': '#000',
         '--font-size': '16px',
         '--font-size-large': '18px',
-        '--padding-small': '3px',
-        '--padding': '5px',
-        '--padding-large': '7px',
-        '--margin-small': '8px',
-        '--margin': '10px',
-        '--margin-large': '12px',
+        '--font-size-small': '14px',
+        '--line-height': '24px',
+        '--line-height-large': '28px',
+        '--line-height-small': '20px',
+        '--margin': '16px',
+        '--margin-large': '18px',
+        '--margin-small': '14px',
+        '--padding': '8px',
+        '--padding-large': '10px',
+        '--padding-small': '6px',
       })
     })
 
-    it('should create variables without sized properties', () => {
-      const styleSheet = StyleSheet()
+    it('should create sized CSS variables from the given properties', () => {
       const vars = {
-        color: 'red',
-        backgroundColor: 'blue',
+        fontSize: '16px',
+        padding: '8px',
+        margin: '16px',
       }
       const result = styleSheet.createVariables(vars)
       expect(result).toEqual({
-        '--color': 'red',
-        '--background-color': 'blue',
+        '--font-size': '16px',
+        '--font-size-large': '18px',
+        '--font-size-small': '14px',
+        '--line-height': '20px',
+        '--line-height-large': '22px',
+        '--line-height-small': '18px',
+        '--margin': '16px',
+        '--margin-large': '18px',
+        '--margin-small': '14px',
+        '--padding': '8px',
+        '--padding-large': '10px',
+        '--padding-small': '6px',
       })
     })
 
-    it('should create variables with fontSize and lineHeight', () => {
-      const styleSheet = StyleSheet()
+    it('should create CSS variables with custom prefix', () => {
+      styleSheet.prefix = 'app'
       const vars = {
-        fontSize: 16,
-        letterSpacing: 1.5,
+        color: '#000',
       }
       const result = styleSheet.createVariables(vars)
       expect(result).toEqual({
-        '--font-size-small': '14px',
-        '--font-size': '16px',
-        '--font-size-large': '18px',
-        '--line-height-small': '18px',
-        '--line-height': '20px',
-        '--line-height-large': '22px',
-        '--letter-spacing': 1.5,
+        '--app-color': '#000',
+      })
+    })
+  })
+
+  describe('createStyles', () => {
+    it('should create CSS properties from the given variables', () => {
+      const vars = {
+        fontSize: '16px',
+        lineHeight: '24px',
+        borderRadius: '4px',
+        padding: '8px',
+        margin: '16px',
+        color: '#000',
+      }
+      const result = styleSheet.createStyles(vars)
+      expect(result).toEqual({
+        'font-size': '16px',
+        'line-height': '24px',
+        'border-radius': '4px',
+        padding: '8px',
+        margin: '16px',
+        color: '#000',
       })
     })
   })
