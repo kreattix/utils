@@ -1,6 +1,6 @@
 {
   "name": "@kreattix/utils",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "type": "module",
   "files": [
     "dist"
@@ -9,7 +9,7 @@
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "start": "vite",
+    "start": "tsc && vite build --watch",
     "build": "tsc && vite build",
     "test": "jest --watch",
     "build:test": "jest",
@@ -53,6 +53,7 @@
   "author": "Prince Patel",
   "license": "MIT",
   "dependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0"
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/react": "^18.3.3"
   }
 }
