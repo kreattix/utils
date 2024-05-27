@@ -19,7 +19,8 @@
     "no-alert": "error",
     "no-console": "warn",
     "camelcase": "error",
-    "@typescript-eslint/no-namespace": "off"
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   },
   "ignorePatterns": ["dist/**/*"]
 }

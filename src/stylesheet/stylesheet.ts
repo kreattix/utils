@@ -1,7 +1,11 @@
 import { objectEntries } from '../objects'
 import { createSizes } from '../sizes'
-import { getNumber, hyphenize } from '../strings'
-import { ICSSProperties, ICSSVariables } from './types'
+import { getNumber, hyphenize, isEmpty } from '../strings'
+import { ICSSProperties, IComponentStyles } from './types'
+
+const diffAmounts: Record<string, number> = {
+  borderRadius: 10,
+}
 
 export class StyleSheetClass {
   prefix = ''
@@ -9,16 +13,16 @@ export class StyleSheetClass {
   sizedProperties = ['borderRadius', 'lineHeight', 'fontSize', 'padding', 'margin']
 
   constructor(prefix?: string) {
-    this._setPrefix(prefix)
+    this.setPrefix(prefix)
   }
 
-  private _setPrefix(prefix?: string): void {
+  setPrefix(prefix?: string): void {
     if (prefix) {
       this.prefix = prefix
     }
   }
 
-  public varName(...args: string[]): string {
+  varName(...args: string[]): string {
     if (this.prefix && !this.isStyles) {
       args.unshift(this.prefix)
     }
@@ -26,30 +30,81 @@ export class StyleSheetClass {
     return this.isStyles ? varname : `--${varname}`
   }
 
-  public createVariables(vars: ICSSProperties): ICSSVariables {
-    const result: ICSSVariables = {}
-    if (vars.fontSize && !vars.lineHeight) {
-      vars.lineHeight = createSizes(getNumber(vars.fontSize), false)('fontSize', 10).large
+  createVarValue(varName: string, value?: string | number | null): string {
+    if (!value) return `var(${varName})`
+    return `var(${varName}, ${value})`
+  }
+
+  createVariables(vars: ICSSProperties): ICSSProperties {
+    const result: ICSSProperties = {}
+    if (vars.fontSize !== undefined && vars.fontSize !== null && !vars.lineHeight) {
+      vars.lineHeight = createSizes(getNumber(vars.fontSize), false)(10).large
     }
     objectEntries(vars).forEach(([property, value]) => {
-      if (this.sizedProperties.includes(property)) {
-        const sizedValue = createSizes(getNumber(value))(property)
+      if (this.sizedProperties.includes(property) && !isEmpty(value)) {
+        const sizedValue = createSizes(getNumber(value))(diffAmounts[property])
         result[this.varName(property)] = sizedValue.medium
         if (!this.isStyles) {
           result[this.varName(property, 'small')] = sizedValue.small
           result[this.varName(property, 'large')] = sizedValue.large
         }
-      } else {
+      } else if (!isEmpty(value)) {
         result[this.varName(property)] = value
       }
     })
     return result
   }
 
-  public createStyles(vars: ICSSVariables): ICSSProperties {
+  createStyles(vars: ICSSProperties): ICSSProperties {
     this.isStyles = true
     const styles = this.createVariables(vars)
     this.isStyles = false
+    return styles
+  }
+
+  getStyledObject(tagName: string, componentName: string, vars: ICSSProperties): IComponentStyles {
+    const styles: IComponentStyles = { [tagName]: {} }
+    if (vars.fontSize !== undefined && vars.fontSize !== null && !vars.lineHeight) {
+      vars.lineHeight = createSizes(getNumber(vars.fontSize), false)(10).large
+    }
+    objectEntries(vars).forEach(([property, value]) => {
+      if (this.sizedProperties.includes(property) && !isEmpty(value)) {
+        const sizedValue = createSizes(getNumber(value))(diffAmounts[property])
+        if (!styles[`${tagName}.size-small`]) styles[`${tagName}.size-small`] = {}
+        if (!styles[`${tagName}.size-large`]) styles[`${tagName}.size-large`] = {}
+
+        styles[tagName][property] = this.createVarValue(
+          this.varName(componentName, property),
+          sizedValue.medium,
+        )
+        styles[`${tagName}.size-small`][property] = this.createVarValue(
+          this.varName(componentName, property, 'small'),
+          sizedValue.small,
+        )
+        styles[`${tagName}.size-large`][property] = this.createVarValue(
+          this.varName(componentName, property, 'large'),
+          sizedValue.large,
+        )
+      } else {
+        styles[tagName][property] = styles[tagName][property] = this.createVarValue(
+          this.varName(componentName, property),
+          value,
+        )
+      }
+    })
+    return styles
+  }
+  getStyles(tagName: string, componentName: string, vars: ICSSProperties): string {
+    const styledObject = this.getStyledObject(tagName, componentName, vars)
+
+    let styles = ``
+    objectEntries(styledObject).forEach(([selector, properties]) => {
+      styles += `${String(selector)} {\n`
+      objectEntries(properties).forEach(([property, value]) => {
+        styles += `  ${hyphenize(property)}: ${value};\n`
+      })
+      styles += '}\n'
+    })
     return styles
   }
 }

@@ -1,43 +1,42 @@
-import { createSizes } from './index'
+import { createSizes } from './sizes'
 
 describe('createSizes', () => {
-  it('should return sizes with default properties', () => {
-    const sizes = createSizes(100)
+  it('should return sizes with pixels by default', () => {
+    const sizes = createSizes(20)
     const result = sizes()
     expect(result).toEqual({
-      large: '112px',
-      medium: '100px',
-      small: '88px',
+      large: '22px',
+      medium: '20px',
+      small: '18px',
     })
   })
 
-  it('should return sizes with custom diff amount', () => {
-    const sizes = createSizes(100)
-    const result = sizes(undefined, 30)
-    expect(result).toEqual({
-      large: '108px',
-      medium: '100px',
-      small: '92px',
-    })
-  })
-
-  it('should return sizes with custom property name', () => {
-    const sizes = createSizes(110)
-    const result = sizes('borderRadius')
-    expect(result).toEqual({
-      large: '134px',
-      medium: '110px',
-      small: '86px',
-    })
-  })
-
-  it('should return sizes without returning in pixels', () => {
-    const sizes = createSizes(100, false)
+  it('should return sizes without pixels if returnInPixels is false', () => {
+    const sizes = createSizes(20, false)
     const result = sizes()
     expect(result).toEqual({
-      large: 112,
-      medium: 100,
-      small: 88,
+      large: 22,
+      medium: 20,
+      small: 18,
+    })
+  })
+
+  it('should adjust sizes based on diffAmount', () => {
+    const sizes = createSizes(20)
+    const result = sizes(10)
+    expect(result).toEqual({
+      large: '24px',
+      medium: '20px',
+      small: '16px',
+    })
+  })
+  it('should adjust sizes based on diffAmount for null property', () => {
+    const sizes = createSizes(20)
+    const result = sizes(10)
+    expect(result).toEqual({
+      large: '24px',
+      medium: '20px',
+      small: '16px',
     })
   })
 })
