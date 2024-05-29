@@ -54,7 +54,7 @@ export class StyleSheetClass {
           result[this.varName(property, 'large')] = sizedValue.large
         }
       } else if (!isEmpty(value)) {
-        result[this.varName(property)] = value
+        result[this.varName(property)] = String(value)
       }
     })
     this.componentName = null
@@ -94,7 +94,7 @@ export class StyleSheetClass {
       } else {
         styles[tagName][property] = styles[tagName][property] = this.createVarValue(
           this.varName(componentName, property),
-          value,
+          String(value),
         )
       }
     })
