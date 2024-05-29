@@ -1,34 +1,20 @@
 import { StyleSheet } from './dist/index.es.js'
 
-const styleSheet = StyleSheet('kd')
-
-const styles = styleSheet.createStyles({
-  letterSpacing: 1.5,
-  borderRadius: 6,
-  fontSize: null,
+const defaultRootStyles = {
+  fontSize: '16px',
   color: 'red',
-  backgroundColor: null,
-})
+}
 
-const variables = styleSheet.createVariables(
-  {
-    letterSpacing: 1.5,
-    borderRadius: 6,
-    fontSize: null,
-    color: 'red',
-    backgroundColor: null,
-  },
-  'display',
-)
+const styleSheet = StyleSheet('prefix')
 
-const componentStyles = styleSheet.getStyles('h1', 'display', {
-  letterSpacing: 1.5,
-  borderRadius: 6,
-  fontSize: 24,
-  color: 'red',
-  backgroundColor: null,
-})
-
-console.log(styles)
-console.log(variables)
-console.log(componentStyles)
+console.clear()
+console.log('================> Start <================\n')
+// console.log(styleSheet.prefix)
+// console.log(styleSheet.getVariableName('color', '', 'primary'))
+// console.log(styleSheet.getVariable(styleSheet.getVariableName('color', '', 'primary'), 0))
+// console.log(styleSheet.getStyle(defaultRootStyles))
+// console.log(styleSheet.getVariabledStyle(defaultRootStyles, 'display'))
+// console.log(styleSheet.createVariables(defaultRootStyles))
+// console.log(styleSheet.createVariables(defaultRootStyles, 'display'))
+console.log(styleSheet.getCSS(defaultRootStyles, '.selector', 'component'))
+console.log('\n=================> End <=================')

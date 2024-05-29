@@ -1,35 +1,35 @@
-import { getNumber, hyphenize, isEmpty } from './strings'
+import { hyphenize, isEmpty, toNumber } from './strings'
 
 describe('String utils', () => {
-  describe('getNumber', () => {
+  describe('toNumber', () => {
     it('should return a number when given a string containing a number', () => {
       const text = 'The number is 42'
-      const result = getNumber(text)
+      const result = toNumber(text)
       expect(result).toEqual(42)
     })
     it('should return a number when given a number', () => {
       const number = 42
-      const result = getNumber(number)
+      const result = toNumber(number)
       expect(result).toEqual(42)
     })
     it('should return 0 when given an empty string', () => {
       const text = ''
-      const result = getNumber(text)
+      const result = toNumber(text)
       expect(result).toEqual(0)
     })
     it('should return 0 when given a string without a number', () => {
       const text = 'No numbers here'
-      const result = getNumber(text)
+      const result = toNumber(text)
       expect(result).toEqual(0)
     })
     it('should return 0 when given null', () => {
       const text = null
-      const result = getNumber(text)
+      const result = toNumber(text)
       expect(result).toEqual(0)
     })
     it('should return 0 when given undefined', () => {
       const text = undefined
-      const result = getNumber(text)
+      const result = toNumber(text)
       expect(result).toEqual(0)
     })
   })
