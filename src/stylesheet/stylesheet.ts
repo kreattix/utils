@@ -9,6 +9,7 @@ const diffAmounts: Record<string, number> = {
 
 export class StyleSheetClass {
   prefix = ''
+  componentName?: string | null = null
   isStyles = false
   sizedProperties = ['borderRadius', 'lineHeight', 'fontSize', 'padding', 'margin']
 
@@ -23,6 +24,9 @@ export class StyleSheetClass {
   }
 
   varName(...args: string[]): string {
+    if (this.componentName) {
+      args.unshift(this.componentName)
+    }
     if (this.prefix && !this.isStyles) {
       args.unshift(this.prefix)
     }
@@ -35,7 +39,8 @@ export class StyleSheetClass {
     return `var(${varName}, ${value})`
   }
 
-  createVariables(vars: ICSSProperties): ICSSProperties {
+  createVariables(vars: ICSSProperties, componentName?: string): ICSSProperties {
+    this.componentName = componentName
     const result: ICSSProperties = {}
     if (vars.fontSize !== undefined && vars.fontSize !== null && !vars.lineHeight) {
       vars.lineHeight = createSizes(getNumber(vars.fontSize), false)(10).large
@@ -52,6 +57,7 @@ export class StyleSheetClass {
         result[this.varName(property)] = value
       }
     })
+    this.componentName = null
     return result
   }
 
@@ -94,6 +100,7 @@ export class StyleSheetClass {
     })
     return styles
   }
+
   getStyles(tagName: string, componentName: string, vars: ICSSProperties): string {
     const styledObject = this.getStyledObject(tagName, componentName, vars)
 

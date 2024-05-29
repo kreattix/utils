@@ -118,10 +118,11 @@ describe('StyleSheetClass', () => {
       color: 'red',
       background: 'blue',
     }
-    const result = styleSheet.createVariables(vars)
+    styleSheet = StyleSheet('prefix')
+    const result = styleSheet.createVariables(vars, 'button')
     expect(result).toEqual({
-      '--color': 'red',
-      '--background': 'blue',
+      '--prefix-button-color': 'red',
+      '--prefix-button-background': 'blue',
     })
   })
 

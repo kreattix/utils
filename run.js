@@ -5,19 +5,26 @@ const styleSheet = StyleSheet('kd')
 const styles = styleSheet.createStyles({
   letterSpacing: 1.5,
   borderRadius: 6,
-  fontSize: '16px !important',
+  fontSize: null,
+  color: 'red',
+  backgroundColor: null,
 })
 
-const variables = styleSheet.createVariables({
-  letterSpacing: 1.5,
-  borderRadius: 6,
-  fontSize: 24,
-})
+const variables = styleSheet.createVariables(
+  {
+    letterSpacing: 1.5,
+    borderRadius: 6,
+    fontSize: null,
+    color: 'red',
+    backgroundColor: null,
+  },
+  'display',
+)
 
 const componentStyles = styleSheet.getStyles('h1', 'display', {
   letterSpacing: 1.5,
   borderRadius: 6,
-  fontSize: null,
+  fontSize: 24,
   color: 'red',
   backgroundColor: null,
 })
