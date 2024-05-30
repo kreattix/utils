@@ -9,5 +9,5 @@ const styleSheet = StyleSheet('prefix')
 
 console.clear()
 console.log('================> Start <================\n')
-console.log(styleSheet.createStyle(defaultRootStyles, '.selector', 'component'))
+console.log(styleSheet.createVariables(defaultRootStyles, 'component'))
 console.log('\n=================> End <=================')
