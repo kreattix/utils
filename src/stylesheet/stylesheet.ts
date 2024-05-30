@@ -40,7 +40,15 @@ export class StyleSheetClass {
     if (isEmpty(defaultValue)) return `var(${varName})`
     return `var(${varName}, ${defaultValue})`
   }
-  getStyle(styles: ICSSProperties) {
+  getValue(property: string, value: ICSSValue, componentName?: string): ICSSValue {
+    return componentName === undefined
+      ? value
+      : this.getVariable(
+          this.getVariableName(componentName, property),
+          this.appendUnit(property, value),
+        )
+  }
+  createStyle(styles: ICSSProperties) {
     const generatedStyles: ICSSProperties = {}
     this.appendDependency(styles)
     Object.entries(styles).forEach(([property, value]) => {
@@ -79,15 +87,7 @@ export class StyleSheetClass {
     this.componentName = null
     return result
   }
-  getValue(property: string, value: ICSSValue, componentName?: string): ICSSValue {
-    return componentName === undefined
-      ? value
-      : this.getVariable(
-          this.getVariableName(componentName, property),
-          this.appendUnit(property, value),
-        )
-  }
-  getCSSProperties(
+  createCSSObject(
     styles: ICSSProperties,
     selector: string,
     componentName?: string,
@@ -130,8 +130,8 @@ export class StyleSheetClass {
     })
     return generatedStyles
   }
-  getCSS(styles: ICSSProperties, selector: string, componentName?: string) {
-    const generatedStyles = this.getCSSProperties(styles, selector, componentName)
+  createCSS(styles: ICSSProperties, selector: string, componentName?: string) {
+    const generatedStyles = this.createCSSObject(styles, selector, componentName)
     let css = ''
     objectEntries(generatedStyles).forEach(([selector, styles]) => {
       css += `${selector} {\n`
@@ -141,6 +141,13 @@ export class StyleSheetClass {
       css += '}\n'
     })
     return css
+  }
+  setStyles(element: HTMLElement, styles: ICSSProperties) {
+    if (element && styles) {
+      objectEntries(styles).forEach(([property, value]) => {
+        element.style.setProperty(property, String(value))
+      })
+    }
   }
 }
 

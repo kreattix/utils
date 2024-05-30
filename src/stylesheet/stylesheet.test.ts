@@ -41,7 +41,7 @@ describe('StyleSheetClass', () => {
       color: 'red',
       margin: null,
     }
-    const generatedStyles = styleSheet.getStyle(styles)
+    const generatedStyles = styleSheet.createStyle(styles)
     expect(generatedStyles).toEqual({
       'font-size': '16px',
       'line-height': '20px',
@@ -90,7 +90,7 @@ describe('StyleSheetClass', () => {
       fontSize: '16px',
       color: 'red',
     }
-    const generatedStyles = styleSheet.getCSSProperties(styles, '.selector', 'component')
+    const generatedStyles = styleSheet.createCSSObject(styles, '.selector', 'component')
     expect(generatedStyles).toEqual({
       '.selector': {
         'font-size': 'var(--prefix-component-font-size, 16px)',
@@ -113,9 +113,23 @@ describe('StyleSheetClass', () => {
       fontSize: '16px',
       color: 'red',
     }
-    const css = styleSheet.getCSS(styles, '.selector', 'component')
+    const css = styleSheet.createCSS(styles, '.selector', 'component')
     expect(css).toEqual(
       '.selector {\nfont-size: var(--prefix-component-font-size, 16px);\ncolor: var(--prefix-component-color, red);\nline-height: var(--prefix-component-line-height, 20px);\n}\n.selector.size-small {\nfont-size: var(--prefix-component-font-size-small, 14px);\nline-height: var(--prefix-component-line-height-small, 18px);\n}\n.selector.size-large {\nfont-size: var(--prefix-component-font-size-large, 18px);\nline-height: var(--prefix-component-line-height-large, 22px);\n}\n',
     )
+  })
+
+  it('should set styles on the element', () => {
+    // Arrange
+    const element = document.createElement('div')
+    const styles = {
+      color: 'red',
+      fontSize: 16,
+      fontWeight: 'bold',
+    }
+    styleSheet.setStyles(element, styleSheet.createStyle(styles))
+    expect(element.style.getPropertyValue('color')).toBe('red')
+    expect(element.style.getPropertyValue('font-size')).toBe('16px')
+    expect(element.style.getPropertyValue('font-weight')).toBe('bold')
   })
 })

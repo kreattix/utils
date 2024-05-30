@@ -1,3 +1,5 @@
+import './types'
+
 export * from './types'
 export * from './classnames'
 export * from './objects'
