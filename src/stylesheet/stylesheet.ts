@@ -21,7 +21,7 @@ export class StyleSheetClass {
     this.prefix = prefix
   }
   appendDependency(styles: ICSSProperties) {
-    if (styles.fontSize !== undefined && styles.fontSize !== null && !styles.lineHeight) {
+    if (styles?.fontSize !== undefined && styles?.fontSize !== null && !styles?.lineHeight) {
       styles.lineHeight = createSizes(toNumber(styles.fontSize), false)(10).large
     }
   }
