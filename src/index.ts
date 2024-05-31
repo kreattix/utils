@@ -1,7 +1,6 @@
-import './types'
-
 export * from './types'
 export * from './classnames'
 export * from './objects'
 export * from './strings'
-export * from './stylesheet/stylesheet'
+export * from './sizes'
+export * from './stylesheet'
