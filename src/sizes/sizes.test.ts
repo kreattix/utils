@@ -1,23 +1,24 @@
+import { toNumber } from '../strings'
 import { createSizes } from './sizes'
 
 describe('createSizes', () => {
   it('should return sizes with pixels by default', () => {
-    const sizes = createSizes(20)
+    const sizes = createSizes([20, 10])
     const result = sizes()
     expect(result).toEqual({
-      large: '22px',
-      medium: '20px',
-      small: '18px',
+      large: '22px 12px',
+      medium: '20px 10px',
+      small: '18px 8px',
     })
   })
 
   it('should return sizes without pixels if returnInPixels is false', () => {
-    const sizes = createSizes(20, false)
+    const sizes = createSizes(toNumber('20px 10px'), false)
     const result = sizes()
     expect(result).toEqual({
-      large: '22',
-      medium: '20',
-      small: '18',
+      large: '22 12',
+      medium: '20 10',
+      small: '18 8',
     })
   })
 
