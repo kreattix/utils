@@ -18,7 +18,7 @@ describe('StyleSheetClass', () => {
       fontSize: '16px',
     }
     styleSheet.appendDependency(styles)
-    expect(styles.lineHeight).toBe(20)
+    expect(styles.lineHeight).toBe('20')
   })
 
   it('should append unit correctly', () => {

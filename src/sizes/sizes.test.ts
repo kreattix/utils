@@ -15,9 +15,9 @@ describe('createSizes', () => {
     const sizes = createSizes(20, false)
     const result = sizes()
     expect(result).toEqual({
-      large: 22,
-      medium: 20,
-      small: 18,
+      large: '22',
+      medium: '20',
+      small: '18',
     })
   })
 
