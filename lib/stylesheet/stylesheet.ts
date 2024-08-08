@@ -51,7 +51,7 @@ export class StyleSheetClass {
   createStyle(styles: ICSSProperties) {
     const generatedStyles: ICSSProperties = {}
     this.appendDependency(styles)
-    Object.entries(styles).forEach(([property, value]) => {
+    objectEntries(styles).forEach(([property, value]) => {
       if (isEmpty(value)) return
       generatedStyles[hyphenize(property)] = this.appendUnit(property, value)
     })
@@ -59,7 +59,7 @@ export class StyleSheetClass {
   }
   getVariabledStyle(styles: ICSSProperties, componentName?: string) {
     const generatedStyles: ICSSProperties = {}
-    Object.entries(styles).forEach(([property, value]) => {
+    objectEntries(styles).forEach(([property, value]) => {
       generatedStyles[hyphenize(property)] = this.getVariable(
         this.getVariableName(componentName, property),
         this.appendUnit(property, value)

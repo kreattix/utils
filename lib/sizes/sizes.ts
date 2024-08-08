@@ -19,10 +19,10 @@ export function createSizes(
     currentSizeUnit[index] !== null ? size + (currentSizeUnit[index] || 'px') : size
 
   function _getSizes(differByAmount: number[]): Record<ISizes, string | number> {
-    let diff = differByAmount
-    if (currentSizeUnit.includes('em')) {
-      diff = differByAmount.map((size) => size / 16)
-    }
+    const diff = currentSizeUnit.includes('em')
+      ? differByAmount.map((size) => size / 16)
+      : differByAmount
+
     return {
       large: currentSize.map((size, index) => sizeWithUnit(size + diff[index], index)).join(' '),
       medium: currentSize.map((size, index) => sizeWithUnit(size, index)).join(' '),
